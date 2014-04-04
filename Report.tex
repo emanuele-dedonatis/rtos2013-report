@@ -79,7 +79,7 @@ Received: November, 04 2013\\
 This project is part of a collaborative project whose purpose is to develop a simple 
 yet realistic training support system. The goal of this project is to develop a pedometer 
 using the MEMS motion sensor on the STM32F4DISCOVERY board. The device provides
-the user with statistics about its training activity.
+the user with statistics about its training activity.\cite{Norman09Learn}
 
 \vspace{4ex}	% Please do not remove or reduce this space here.
 \begin{multicols}{2}
@@ -89,9 +89,10 @@ the user with statistics about its training activity.
 During the Real-Time Operating System course of the Polytechnic of Milan has been
 proposed a collaborative project whose aim is to develop a Personal Trainer device
 based on the economical development board STM32F4DISCOVERY and the 
-RTOS Miosix embedded OS. 
+Miosix embedded OS. 
 
-Each group was assigned one of the following modules
+Each group was assigned one of the following modules:
+{\small
 \begin{center}
 \begin{tabular}{|l|c|r|} \hline
 {\bf Module Name} & {\bf Device}\\ \hline
@@ -104,8 +105,45 @@ Social Wireless & NRF24L01 2.4GHz TxRx\\
 Context Awareness & ADC \\ \hline
 \end{tabular}
 \end{center}
+}
 
 The final goal is to join each module in order to build a working system.
+
+%-----------------------------------------------------------------------------
+\subsection{STM32F4DISCOVERY board}
+% Please avoid separations in titles
+% and separate text manually
+
+The STM32F4DISCOVERY is an evaluation board by STMicroelectronics, based on the ARM Cortex-M4F core.
+
+{\small
+\begin{itemize}
+\item STM32F407VGT6 microcontroller featuring 32-bit ARM Cortex-M4F core, 1 MB Flash, 192 KB RAM in an LQFP100 package
+\item LIS302DL or LIS3DSH ST MEMS 3-axis accelerometer
+\item MP45DT02, ST MEMS audio sensor, omni-directional digital microphone
+\item CS43L22, audio DAC with integrated class D speaker driver
+\item USB OTG FS with micro-AB connector
+\end{itemize}
+}
+\begin{figurehere}
+ \centering
+ \includegraphics[width=8cm, height=5cm]{./eps/STM32F4.eps}
+ \caption{STM32F4DISCOVERY board}
+ \label{fig:STM32F4}
+\end{figurehere}
+
+%-----------------------------------------------------------------------------
+\subsection{MIOSIX embedded OS}
+% Please avoid separations in titles
+% and separate text manually
+
+Miosix is a kernel designed to run on 32bit microcontrollers, in active development since 2008.
+
+It is designed as a single process, multiple threads kernel, that matches the capabilities of microcontrollers (i.e., the lack of an MMU). Applications are statically linked with the kernel and standard library forming one binary file suitable to be loaded onto a microcontroller.
+
+Miosix is designed in a way to hide the boot process from the user. When main() is called, the kernel has already started. Indeed, main() itself is a thread. To achieve this result the initialization of the basic hardware functionalities required for the kernel to boot is coded in a board support package.
+
+The kernel is licensed under the GPL license with an exception that allows it to be linked with propietary application code.
 
 %-----------------------------------------------------------------------------
 \subsection{MEMS Motion Sensor}
@@ -115,7 +153,7 @@ The final goal is to join each module in order to build a working system.
 The STM32F4DISCOVERY includes the LIS302DL ST MEMS motion sensor.
 It is an ultra compact low-power three-axis linear accelerometer. It includes
 a sensing element and an IC interface able to provide the measured acceleration
-to the external world through I2C/SPI serial interface.\cite{Norman09Learn}
+to the external world through I2C/SPI serial interface.
 
 The STM32F4 controls this motion sensor through the SPI interface (see {\bf Figure
 \ref{fig:LIS302DL}}). 
@@ -126,37 +164,6 @@ The STM32F4 controls this motion sensor through the SPI interface (see {\bf Figu
  \caption{LIS302DL Motion Sensor}
  \label{fig:LIS302DL}
 \end{figurehere}
-
-
-%-----------------------------------------------------------------------------
-\subsection{The second subsection of the first \\ Section}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et ligula. Nullam
-in libero. Donec dictum pede in justo. Lorem ipsum dolor sit amet, consectetur
-adipiscing elit. Aliquam congue. Aliquam egestas. Nunc eu est ac nibh mattis
-vestibulum. Curabitur aliquet bibendum odio. Etiam hendrerit. Nunc a velit quis
-dui molestie consequat. Sed et turpis et mi feugiat tincidunt. Sed sollicitudin.
-Ut risus? Duis eget orci eu turpis consectetur fringilla? Lorem ipsum dolor sit
-amet, consectetur adipiscing elit. Nullam tellus ligula, placerat vitae, tempor
-vitae, varius id; est! Nullam et ipsum eget tellus eleifend sollicitudin? Fusce
-urna massa, imperdiet vitae, convallis in; lacinia sed, tortor.
-
-\begin{figure*}[t]
-  \centering
- \includegraphics[width=16cm, height=4cm]{./eps/placeholder.eps}
- \caption{Some wide-figure caption.}
- \label{fig:myfigure2}
-\end{figure*}
-
-And this is the reference to a single column figure (see {\bf Figure
-\ref{fig:myfigure2}}). Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Nullam consectetur neque at orci. Curabitur non metus. Praesent congue porta
-nisl. Suspendisse ultricies, sem ac ultrices aliquam, erat nisi fermentum est; a
-rhoncus mauris arcu eget nibh. Aliquam sollicitudin velit non erat. Lorem ipsum
-dolor sit amet, consectetur adipiscing elit. Integer nulla diam, facilisis vel,
-accumsan sed; molestie egestas, massa. Fusce malesuada, ipsum et pulvinar
-aliquet, est dolor laoreet enim, quis porttitor erat mauris eget sapien. Integer
-vitae urna. Duis lectus.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The Second Section}
