@@ -57,7 +57,7 @@
 
 % Please use capital letters in the beginning of important words as for example
 \begin{mytitle}Pedometer for STM32F4\end{mytitle}
-\begin{mysubtitle}Report daily activities and calculate burned calories\end{mysubtitle}
+\begin{mysubtitle}Use the MEMS accelerometer to count number of steps\end{mysubtitle}
 %
 % Please do not insert a line here
 %
@@ -76,41 +76,55 @@ Received: November, 04 2013\\
 \hspace{10ex}
 
 \begin{myabstract} Abstract \end{myabstract}
-This project is part of a collaborative project whose purpose is to develop a simple yet realistic training support system. The goal of this project is to develop a pedometer using the MEMS accelerometer on the STM32F4DISCOVERY board.
+This project is part of a collaborative project whose purpose is to develop a simple 
+yet realistic training support system. The goal of this project is to develop a pedometer 
+using the MEMS motion sensor on the STM32F4DISCOVERY board. The device provides
+the user with statistics about its training activity.
 
 \vspace{4ex}	% Please do not remove or reduce this space here.
 \begin{multicols}{2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
+During the Real-Time Operating System course of the Polytechnic of Milan has been
+proposed a collaborative project whose aim is to develop a Personal Trainer device
+based on the economical development board STM32F4DISCOVERY and the 
+RTOS Miosix embedded OS. 
+
+Each group was assigned one of the following modules
+\begin{center}
+\begin{tabular}{|l|c|r|} \hline
+{\bf Module Name} & {\bf Device}\\ \hline
+Pedometer & MEMS \\
+User Interface & UART, Flash\\
+Audio Feedback & CS43L22 (DAC) \\
+Voice Commands & NONE (PCM Samples) \\
+PCM Encoding & MP45DT02 MEMS Mic\\
+Social Wireless & NRF24L01 2.4GHz TxRx\\
+Context Awareness & ADC \\ \hline
+\end{tabular}
+\end{center}
+
+The final goal is to join each module in order to build a working system.
 
 %-----------------------------------------------------------------------------
 \subsection{MEMS Motion Sensor}
 % Please avoid separations in titles
 % and separate text manually
 
-This is a citation \cite{Norman09Learn} and here is another citation
-\cite{Peyton93Howto}.  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Sed velit. Ut id orci ut quam placerat rhoncus. Pellentesque sed nisl. Aliquam
-sagittis nunc ut dui.  Nullam elementum felis eget mauris! Curabitur nunc arcu,
-venenatis ac, commodo id, tristique molestie, urna? Donec in tortor vel augue
-rhoncus elementum. Nunc ac felis. Nam nulla quam, cursus sed, egestas nec,
-rutrum et, purus. Nullam sapien mi, ullamcorper rutrum, placerat eget,
-consectetur ut, metus. Integer porta, lacus non fermentum pretium, enim dui
-auctor ligula, ut faucibus lacus sem a metus. Maecenas posuere dui eu est. Ut
-massa urna, auctor quis, tempus et, sollicitudin quis, justo?
+The STM32F4DISCOVERY includes the LIS302DL ST MEMS motion sensor.
+It is an ultra compact low-power three-axis linear accelerometer. It includes
+a sensing element and an IC interface able to provide the measured acceleration
+to the external world through I2C/SPI serial interface.\cite{Norman09Learn}
 
-
-And this is the reference to a single column figure (see {\bf Figure
-\ref{fig:myfigure1}}).  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Vivamus dapibus convallis odio. Nunc sollicitudin laoreet ante! Vivamus dictum
-euismod orci.
+The STM32F4 controls this motion sensor through the SPI interface (see {\bf Figure
+\ref{fig:LIS302DL}}). 
 
 \begin{figurehere}
  \centering
- \includegraphics[width=8cm, height=4cm]{./eps/placeholder.eps}
- \caption{Some single-column figure caption.}
- \label{fig:myfigure1}
+ \includegraphics[width=8cm, height=3cm]{./eps/LIS302DL.eps}
+ \caption{LIS302DL Motion Sensor}
+ \label{fig:LIS302DL}
 \end{figurehere}
 
 

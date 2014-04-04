@@ -42,7 +42,7 @@ report: $(SOURCE).pdf
 show: pdf
 	kill -9 `ps aux | grep $(SOURCE).pdf | grep -v grep \
 		| awk '{print $2}'` >/dev/null 2>&1 || true
-	gnome-open $(SOURCE).pdf
+	open -a Preview $(SOURCE).pdf
 
 clean:
 	for e in $(OBJS); do \
