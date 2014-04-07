@@ -79,7 +79,7 @@ Received: November, 04 2013\\
 This project is part of a collaborative project whose purpose is to develop a simple 
 yet realistic training support system. The goal of this project is to develop a pedometer 
 using the MEMS motion sensor on the STM32F4DISCOVERY board. The device provides
-the user with statistics about its training activity.\cite{Norman09Learn}
+the user with statistics about its training activity.
 
 \vspace{4ex}	% Please do not remove or reduce this space here.
 \begin{multicols}{2}
@@ -166,38 +166,53 @@ The STM32F4 controls this motion sensor through the SPI interface (see {\bf Figu
 \end{figurehere}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The Second Section}
+\section{Pedometer Algorithm}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Aenean magna. Nunc non
-ante eget nibh condimentum tempor. Nullam ullamcorper lectus eget mauris. Nam
-neque orci; rhoncus at, pulvinar quis, elementum sit amet, turpis. Mauris
-posuere nisi ut justo. Morbi non lorem vitae mauris interdum faucibus.
-Vestibulum ut sapien in augue faucibus fringilla. Vestibulum ante ipsum primis
-in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam vestibulum
-fringilla libero. Curabitur libero diam, hendrerit sit amet, ornare eget,
-imperdiet vel, purus!
+To develop the pedometer algorithm we relied on the Neil Zhao's model .\cite{NeilZhao}
 
 
 %-----------------------------------------------------------------------------
-\subsection{The first subsection of the second \\ Section}
+\subsection{Digital Filter}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam consectetur ante at
-eros. Vestibulum mi nisi, venenatis sollicitudin, tempus sed, auctor id, tortor.
-Fusce orci. Duis tellus arcu, euismod sed, consequat sit amet, elementum vel,
-mauris. Curabitur leo diam; dapibus quis, condimentum vitae, dignissim ut, diam.
-Nulla et nulla eget elit volutpat sagittis.
+First, a digital filter is needed to smooth the signals. Four registers and a summing unit can be used  (see {\bf Figure
+\ref{fig:DigitalFilter}}).  Of course, more registers could be used to make the acceleration data smoother, but the response time would be slower.
+
+\begin{figurehere}
+ \centering
+ \includegraphics[width=7cm, height=3cm]{./eps/DigitalFilter.eps}
+ \caption{Digital filter}
+ \label{fig:DigitalFilter}
+\end{figurehere}
 
 %-----------------------------------------------------------------------------
-\subsection{The second subsection of the second \\ Section}
+\subsection{Dynamic Threshold and Dynamic Precision}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eget mauris.
-Nulla facilisi. Ut condimentum tempor eros? Integer metus mauris, consectetur
-sit amet, tempor a, facilisis eu, nisl. Vestibulum at turpis. Ut vitae tortor
-pretium nisl vestibulum blandit. Nulla nibh urna, semper et, elementum at,
-mattis ut, nisi! Cum sociis natoque penatibus et magnis dis parturient montes,
-nascetur ridiculus mus. Morbi vel ligula eget lacus convallis venenatis. Aliquam
-lacinia tincidunt felis. Ut dui.
+The system continuously updates the maximum and minimum values of the 3-axis acceleration every 50 samples. The average value, (Max + Min)/2, is called the dynamic threshold level. 
 
+\begin{figurehere}
+ \centering
+ \includegraphics[width=8cm, height=5cm]{./eps/Threshold.eps}
+ \caption{Acceleration curves}
+ \label{fig:Threshold}
+\end{figurehere}
+
+For each axis two registers, sample\textunderscore new and sample\textunderscore old, are used to pick out new sample result. When a new data sample comes, sample\textunderscore new is shifted to the sample\textunderscore old register unconditionally. However the new sample result will be shifted into the sample\textunderscore new register only if the changes in acceleration are greater than a predefined precision; otherwise the sample\textunderscore new register will remain unchanged. The shift register group can thus remove the high-frequency noise and make the decision more precise.
+
+\begin{figurehere}
+ \centering
+ \includegraphics[width=8cm, height=3cm]{./eps/RegistersDiagram.eps}
+ \caption{Dynamic threshold and dynamic precision}
+ \label{fig:RegistersDiagram}
+\end{figurehere}
+
+%-----------------------------------------------------------------------------
+\subsection{Step}
+
+A step is defined as happening if there is a negative slope of the acceleration plot (sample\textunderscore new < sample\textunderscore old) when the vertical acceleration curve crosses below the dynamic threshold.
+
+The vertical axis is the one with the greatest threshold level since it reads also the gravitational acceleration.
+
+%-----------------------------------------------------------------------------
 % We suggest the use of JabRef for editing your bibliography file (Report.bib)
 \bibliographystyle{splncs}
 \bibliography{Report}
