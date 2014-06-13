@@ -24,6 +24,8 @@
 \usepackage{amssymb}
 \usepackage[dvips]{graphicx}
 \usepackage{epsfig}
+\usepackage{hyperref}
+\usepackage[justification=centering]{caption}
 \input{tcilatex}
 %-----------------------------------------------------------------------------
 % Page Setup
@@ -46,8 +48,8 @@
 % CAUTION:   The first reference to a figure/table in the text should be formatted fat.
 %
 \makeatletter
-\newenvironment{tablehere}{\def\@captype{table}}{}
-\newenvironment{figurehere}{\def\@captype{figure}\vspace{2ex}}{\vspace{2ex}}
+\newenvironment{tablehere}{\def\@captype{table}\vspace{2ex}}{\vspace{1ex}}
+\newenvironment{figurehere}{\def\@captype{figure}\vspace{2ex}}{\vspace{1ex}}
 \makeatother
 
 
@@ -72,7 +74,7 @@ Matr. 818949, (bruno.pistone@mail.polimi.it)\\
 \emph{Reviser: PhD. Patrick Bellasi (bellasi@elet.polimi.it)}
 \end{flushright}
 
-Received: November, 04 2013\\
+Received: June, 12 2014\\
 \hspace{10ex}
 
 \begin{myabstract} Abstract \end{myabstract}
@@ -91,10 +93,10 @@ proposed a collaborative project whose aim is to develop a Personal Trainer devi
 based on the economical development board STM32F4DISCOVERY and the 
 Miosix embedded OS. 
 
-Each group was assigned one of the following modules:
-{\small
-\begin{center}
-\begin{tabular}{|l|c|r|} \hline
+
+\begin{tablehere}
+\centering
+\begin{tabular}{|c|l|} \hline
 {\bf Module Name} & {\bf Device}\\ \hline
 Pedometer & MEMS \\
 User Interface & UART, Flash\\
@@ -103,9 +105,10 @@ Voice Commands & NONE (PCM Samples) \\
 PCM Encoding & MP45DT02 MEMS Mic\\
 Social Wireless & NRF24L01 2.4GHz TxRx\\
 Context Awareness & ADC \\ \hline
-\end{tabular}
-\end{center}
-}
+\end {tabular}
+\caption{Group modules} 
+\end{tablehere} 
+
 
 The final goal is to join each module in order to build a working system.
 
@@ -125,6 +128,7 @@ The STM32F4DISCOVERY is an evaluation board by STMicroelectronics, based on the 
 \item USB OTG FS with micro-AB connector
 \end{itemize}
 }
+
 \begin{figurehere}
  \centering
  \includegraphics[width=8cm, height=5cm]{./eps/STM32F4.eps}
@@ -137,13 +141,9 @@ The STM32F4DISCOVERY is an evaluation board by STMicroelectronics, based on the 
 % Please avoid separations in titles
 % and separate text manually
 
-Miosix is a kernel designed to run on 32bit microcontrollers, in active development since 2008.
-
-It is designed as a single process, multiple threads kernel, that matches the capabilities of microcontrollers (i.e., the lack of an MMU). Applications are statically linked with the kernel and standard library forming one binary file suitable to be loaded onto a microcontroller.
-
-Miosix is designed in a way to hide the boot process from the user. When main() is called, the kernel has already started. Indeed, main() itself is a thread. To achieve this result the initialization of the basic hardware functionalities required for the kernel to boot is coded in a board support package.
-
-The kernel is licensed under the GPL license with an exception that allows it to be linked with propietary application code.
+Miosix is an OS kernel designed to run on 32bit microcontrollers, in active development since 2008.
+It supports both a single process, multiple threads application model where applications are statically linked with the kernel, and an experimental multiprocess environment with memory protection that allows loading applications at runtime. 
+The kernel is royalty-free and licensed under the GPL license with an exception that allows it to be linked with propietary application code. \cite{miosix}
 
 %-----------------------------------------------------------------------------
 \subsection{MEMS Motion Sensor}
@@ -210,11 +210,124 @@ For each axis two registers, sample\textunderscore new and sample\textunderscore
 
 A step is defined as happening if there is a negative slope of the acceleration plot (sample\textunderscore new < sample\textunderscore old) when the vertical acceleration curve crosses below the dynamic threshold.
 
-The vertical axis is the one with the greatest threshold level since it reads also the gravitational acceleration.
+%-----------------------------------------------------------------------------
+\subsection{Peak Detection}
+
+The step counter calculates the steps from the x-axis, y-axis, or z-axis, depending on which axis has the maximum absolute value of threshold, since the gravitational force acts on it.
+
+%-----------------------------------------------------------------------------
+\subsection{Time Window}
+
+Time window is used to discard the invalid vibrations. We assume that people can run as rapidly as five steps per second and walk as slowly as one step every two seconds. Thus, the interval between two valid steps is defined as being in the time window [0.2 s to 2.0 s]; all steps with intervals outside the time window should be discarded.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Statistics}
+
+%-----------------------------------------------------------------------------
+\subsection{Training mode}
+
+It is possible to recognize the training mode based on the step's frequency: the running frequency is between 2 and 5 steps per second and the walking frequency is between 0.5 and 2 steps per second. 
+
+\begin{tablehere}
+\centering
+\begin{tabular}{|c|c|c|} \hline
+{\bf Minimum} & {\bf Mode} & {\bf Maximum}\\ \hline
+200ms & RUNNING & 500ms \\
+500ms & WALKING & 2000ms \\
+2000ms & STEADY & $\infty$ \\  \hline
+\end{tabular}
+\caption{Interval time between two steps}
+\end{tablehere}
+
+
+
+%-----------------------------------------------------------------------------
+\subsection{Distance}
+
+The distance depends on the length of a step. Experimentally we can approximate this length as: \\
+
+\centerline{$walking \_ length = 1/6 * height$}
+\centerline{$running \_ length = 1/3 * height$}
+
+%-----------------------------------------------------------------------------
+\subsection{Speed}
+Knowing the distance and the time between two steps we can calculate the approximate speed: \\
+
+\centerline{$speed = distance / time$}
+
+%-----------------------------------------------------------------------------
+\subsection{Calories}
+There is no accurate means for calculating the rate of expending calories. 
+Some factors that determine it include body weight, intensity of workout, conditioning level, and metabolism.
+We can estimate it using a conventional approximation: \\
+
+\centerline{$calories [kCal] = 0.9 * distance [km] * weight [kg]$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{User Interface}
+%-----------------------------------------------------------------------------
+\subsection{LCD HD44780}
+We used an LCD HD44780 20x4 display to allow the user to view their own statistics. Miosix provides a C++ library to easy use the LCD.
+
+\begin{figurehere}
+ \centering
+ \includegraphics[width=6cm, height=3cm]{./eps/hd44780.eps}
+ \caption{LCD HD44780 20x4}
+ \label{fig:hd44780}
+\end{figurehere}
+
+The user can view the steps, the training mode, the instantaneous speed, the distance and the burned calories.
+
+\begin{tablehere}
+\centering
+\scalebox{0.6}{
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|} \hline
+S&T&E&P&S&:&&*&*&*&*& & & & & & & & & \\ \hline
+M&O&D&E&:& &*&*&*&*&*&*& & & & & & & & \\ \hline
+S&P&E&E&D&:& &*&*&.&*& &k&m&/&h& & & & \\ \hline
+K&M&:& &*&*&.&*&*& &K&C&A&L&:& &*&*&*&*\\ \hline
+\end{tabular}
+}
+\caption{GUI tamplate}
+ \label{tab:GUI}
+\end{tablehere}
+
+%-----------------------------------------------------------------------------
+\subsection{User buttons}
+Some stats, like distance, speed and burned calories, required user's weight and height. 
+On startup the system asks for this information and through three buttons the user can increase / decrease / confirm its weight and height.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Social Wireless}
+We collaborate with the group 61 to implement the wireless module. \cite{group61}
+
+The goal is to exchange data with nearby devices using a NRF24L01 2.4GHz RF Transceiver.
+
+The system sends and receives the number of steps in order to compare own stats with friends' stats.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Audio Feedback}
+
+We collaborate with the group 31 to implement the audio module. \cite{group31}
+
+The goal is to notify the user about his number of steps and the result of steps' comparison with his friends.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}
+
+This is the final prototype. A video demonstration can be found on \url{http://youtube.com/}.
+
+\begin{figurehere}
+ \centering
+ \includegraphics[width=8cm, height=5cm]{./eps/STM32F4.eps}
+ \caption{STM32F4DISCOVERY board}
+ \label{fig:STM32F4}
+\end{figurehere}
 
 %-----------------------------------------------------------------------------
 % We suggest the use of JabRef for editing your bibliography file (Report.bib)
-\bibliographystyle{splncs}
+\bibliographystyle{plain}
 \bibliography{Report}
 
 \end{multicols}

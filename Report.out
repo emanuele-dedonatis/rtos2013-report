@@ -1,0 +1,21 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{STM32F4DISCOVERY board}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{MIOSIX embedded OS}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{MEMS Motion Sensor}{section.1}% 4
+\BOOKMARK [1][-]{section.2}{Pedometer Algorithm}{}% 5
+\BOOKMARK [2][-]{subsection.2.1}{Digital Filter}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.2}{Dynamic Threshold and Dynamic Precision}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.3}{Step}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.4}{Peak Detection}{section.2}% 9
+\BOOKMARK [2][-]{subsection.2.5}{Time Window}{section.2}% 10
+\BOOKMARK [1][-]{section.3}{Statistics}{}% 11
+\BOOKMARK [2][-]{subsection.3.1}{Training mode}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.2}{Distance}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.3}{Speed}{section.3}% 14
+\BOOKMARK [2][-]{subsection.3.4}{Calories}{section.3}% 15
+\BOOKMARK [1][-]{section.4}{User Interface}{}% 16
+\BOOKMARK [2][-]{subsection.4.1}{LCD HD44780}{section.4}% 17
+\BOOKMARK [2][-]{subsection.4.2}{User buttons}{section.4}% 18
+\BOOKMARK [1][-]{section.5}{Social Wireless}{}% 19
+\BOOKMARK [1][-]{section.6}{Audio Feedback}{}% 20
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 21
