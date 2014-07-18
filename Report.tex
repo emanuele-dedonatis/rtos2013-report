@@ -71,10 +71,9 @@ Pistone Bruno\\
 Matr. 818949, (bruno.pistone@mail.polimi.it)\\
 \begin{flushright}
 \emph{Report for the master course of Embedded Systems}\\
-\emph{Reviser: PhD. Patrick Bellasi (bellasi@elet.polimi.it)}
 \end{flushright}
 
-Received: June, 12 2014\\
+July, 18 2014\\
 \hspace{10ex}
 
 \begin{myabstract} Abstract \end{myabstract}
@@ -88,8 +87,7 @@ the user with statistics about its training activity.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-During the Real-Time Operating System course of the Polytechnic of Milan has been
-proposed a collaborative project whose aim is to develop a Personal Trainer device
+The Real-Time Operating System course of the Polytechnic of Milan proposed a collaborative project whose aim is to develop a Personal Trainer device
 based on the economical development board STM32F4DISCOVERY and the 
 Miosix embedded OS. 
 
@@ -174,8 +172,8 @@ To develop the pedometer algorithm we relied on the Neil Zhao's model .\cite{Nei
 %-----------------------------------------------------------------------------
 \subsection{Digital Filter}
 
-First, a digital filter is needed to smooth the signals. Four registers and a summing unit can be used  (see {\bf Figure
-\ref{fig:DigitalFilter}}).  Of course, more registers could be used to make the acceleration data smoother, but the response time would be slower.
+A digital filter is needed to smooth the signals. Four registers and a summing unit can be used  (see {\bf Figure
+\ref{fig:DigitalFilter}}).  More registers could be used to make the acceleration data smoother, but the response time would be slower.
 
 \begin{figurehere}
  \centering
@@ -187,7 +185,7 @@ First, a digital filter is needed to smooth the signals. Four registers and a su
 %-----------------------------------------------------------------------------
 \subsection{Dynamic Threshold and Dynamic Precision}
 
-The system continuously updates the maximum and minimum values of the 3-axis acceleration every 50 samples. The average value, (Max + Min)/2, is called the dynamic threshold level. 
+The system updates the maximum and minimum values of the 3-axis acceleration every 50 samples. The average value, (Max + Min)/2, is called the dynamic threshold level. 
 
 \begin{figurehere}
  \centering
@@ -316,13 +314,13 @@ The goal is to notify the user about his number of steps and the result of steps
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
 
-This is the final prototype. A video demonstration can be found on \url{http://youtube.com/}.
+This is the final prototype. On the left there is a potentiometer to adjust the contrast of the LCD. On the top there are the three user buttons and the NRF24L01 transceiver. On the right there is the audio jack
+connected to a mini-speaker. We used a portable battery charger for smartphone to power the device via USB.
 
 \begin{figurehere}
  \centering
- \includegraphics[width=8cm, height=5cm]{./eps/STM32F4.eps}
- \caption{STM32F4DISCOVERY board}
- \label{fig:STM32F4}
+ \includegraphics[width=8cm, height=5cm]{./eps/proto.eps}
+ \label{fig:prototype}
 \end{figurehere}
 
 %-----------------------------------------------------------------------------
